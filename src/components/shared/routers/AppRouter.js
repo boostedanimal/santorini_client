@@ -4,6 +4,8 @@ import { GameGuard } from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
+import Registration from "../../registration/Registration";
+import UserProfile from "../../userprofile/UserProfile";
 
 /**
  * Main router of your application.
@@ -28,6 +30,20 @@ class AppRouter extends React.Component {
                 </GameGuard>
               )}
             />
+            <Route
+                path="/registration"
+                exact
+                render={() => (
+                    <Registration />
+                )}
+            />
+              <Route // path to the user profile with the right render props:  a render prop is a function prop that a component uses to know what to render.
+                  path="/users/:username"
+                  exact
+                  render={(props) => (
+                      <UserProfile {...props} />
+                  )}
+              />
             <Route
               path="/login"
               exact

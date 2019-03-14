@@ -52,7 +52,8 @@ const Label = styled.label`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: left;
   margin-top: 20px;
 `;
 
@@ -75,40 +76,44 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
-      username: null
+      username: null,
+      password: null
     };
   }
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
-  login() {
-    fetch(`${getDomain()}/users`, {
+  login(){
+    fetch(`${getDomain()}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       })
     })
-      .then(response => response.json())
-      .then(returnedUser => {
-        const user = new User(returnedUser);
-        // store the token into the local storage
-        localStorage.setItem("token", user.token);
-        // user login successfully worked --> navigate to the route /game in the GameRouter
-        this.props.history.push(`/game`);
-      })
-      .catch(err => {
-        if (err.message.match(/Failed to fetch/)) {
-          alert("The server cannot be reached. Did you start it?");
-        } else {
-          alert(`Something went wrong during the login: ${err.message}`);
-        }
-      });
+        .then(response => response.json())
+        .then(response => {
+          if(response.status === 404 || response.status === 500){
+            alert("Wrong username and/or password!")
+          }
+          else {
+            console.log(response);
+            const user = new User(response);
+            localStorage.setItem("token", user.token);
+            this.props.history.push("/game");
+          }
+        })
+        .catch(err => {
+          if (err.message.match(/Failed to fetch/)) {
+            alert("The server cannot be reached. Did you start it?");
+          } else {
+            alert(`Something went wrong during the login: ${err.message}`);
+          }
+        });
   }
 
   /**
@@ -143,23 +148,24 @@ class Login extends React.Component {
                 this.handleInputChange("username", e.target.value);
               }}
             />
-            <Label>Name</Label>
-            <InputField
+            <Label>Password</Label>
+            <InputField type={"password"}
               placeholder="Enter here.."
               onChange={e => {
-                this.handleInputChange("name", e.target.value);
+                this.handleInputChange("password", e.target.value);
               }}
             />
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
-                width="50%"
+                disabled={!this.state.username || !this.state.password}
+                width="30%"
                 onClick={() => {
                   this.login();
                 }}
-              >
-                Login
-              </Button>
+            >
+              Login
+            </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="/registration" style={{ color: '#FCFFF7'}}>Don't have an account?</a>
             </ButtonContainer>
           </Form>
         </FormContainer>

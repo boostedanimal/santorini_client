@@ -1,24 +1,34 @@
 import React from "react";
 import styled from "styled-components";
+import Link from "react-router-dom/es/Link";
+import {Button} from "./design/Button";
 
 const Container = styled.div`
   margin: 6px 0;
-  width: 280px;
+  width: 500px;
   padding: 10px;
   border-radius: 6px;
-  display: flex;
+  display: table-column;
   align-items: center;
   border: 1px solid #ffffff26;
 `;
 
 const UserName = styled.div`
-  font-weight: lighter;
+  font-weight: bold;
   margin-left: 5px;
+  
 `;
 
 const Name = styled.div`
-  font-weight: bold;
-  color: #06c4ff;
+  font-weight: lighter;
+`;
+
+const Token = styled.div`
+  font-weight: lighter;
+`;
+
+const Password = styled.div`
+  font-weight: lighter;
 `;
 
 const Id = styled.div`
@@ -35,13 +45,16 @@ const Id = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Player = ({ user }) => {
+const Player = ({user}) => {
   return (
     <Container>
-      <Name>{user.name}</Name> <UserName>{user.username}</UserName>
-      <Id>Id: {user.id}</Id>
+        <UserName>Username: {user.username}</UserName>
+        <Name>Name: {user.name}</Name>
+        <Name>Creation Date: {user.creationdate}</Name>
+        <Id>ID: {user.id}</Id>
     </Container>
   );
 };
 
 export default Player;
+//TODO: delete out parts that aren't in use

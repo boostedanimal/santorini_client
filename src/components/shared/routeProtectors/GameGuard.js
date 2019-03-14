@@ -14,5 +14,6 @@ export const GameGuard = props => {
   if (localStorage.getItem("token")) {
     return props.children;
   }
-  return <Redirect to={"/login"} />;
+  //changed redirection path to registration (prior one was login)
+  return <Redirect to={"/registration"} />;
 };
